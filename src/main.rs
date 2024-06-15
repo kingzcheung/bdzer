@@ -24,7 +24,7 @@ fn main() {
                 let mut input = String::new();
                 reader.read_line(&mut input).expect("读取输入时出错");
                 let user_input = input.trim().to_string();
-                println!("{user_input}");
+                
                 if user_input == "y" {
                     
                     for remove_file in remove_files {

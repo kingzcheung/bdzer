@@ -2,14 +2,13 @@ use std::{collections::HashMap, fs::DirEntry, io::{Error, Write as _}};
 use std::io::Read;
 use std::path::PathBuf;
 use sha2::{Digest, Sha256};
-
 #[derive(Debug)]
 pub struct Bulldozer {
-    base_path: PathBuf,
+    base_path: Vec<PathBuf>,
 }
 
 impl Bulldozer {
-    pub fn new(base_path: PathBuf) -> Self {
+    pub fn new(base_path: Vec<PathBuf>) -> Self {
         Bulldozer {
             base_path
         }
@@ -17,7 +16,12 @@ impl Bulldozer {
 
     pub fn run(&self) -> Result<HashMap<String, Vec<String>>, Box<dyn std::error::Error>> {
         let mut hash_map: HashMap<String, Vec<String>> = HashMap::new();
-        generate_hash_list(&mut hash_map, &self.base_path)?;
+
+
+        for base_path in &self.base_path {
+            generate_hash_list(&mut hash_map, base_path)?;
+        }
+
 
         let map = hash_map.into_iter().filter(|(_, v)| v.len() > 1).collect();
 
@@ -90,7 +94,7 @@ mod tests
         let mut p = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         p.push("test_data");
 
-        let res = super::Bulldozer::new(p).run();
+        let res = super::Bulldozer::new(vec![p]).run();
         dbg!(&res);
         assert!(res.is_ok())
     }
