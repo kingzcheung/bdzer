@@ -1,13 +1,13 @@
-# bdzer - 查找重复文件小工具
+# bdzer - A Small Tool for Finding Duplicate Files
 
-### 安装
+### Installation
 
 ```
 cargo build --release
 ```
 
-### 使用
+### Usage
 
 ```
-bdzer /path/to/dir
+bdzer /path/to/dir /path/to/dir2
 ```
