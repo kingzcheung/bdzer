@@ -10,6 +10,9 @@ pub struct Cli {
     /// include file extension
     #[arg(short, long, default_value = "rs")]
     pub include_ext: Option<Vec<String>>,
+
+    #[arg(short, long)]
+    pub yes: bool,
 }
 
 pub fn cli_run(

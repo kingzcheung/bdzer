@@ -18,14 +18,18 @@ fn main() {
             
             let remove_files = only_one_for_key(&dup);
             if !remove_files.is_empty() {
-                println!("是否要删除多余的文件? [y/n]:");
-                let stdin = io::stdin();
-                let mut reader = BufReader::new(stdin.lock());
-                let mut input = String::new();
-                reader.read_line(&mut input).expect("读取输入时出错");
-                let user_input = input.trim().to_string();
+                let yes = cli.yes;
+                let mut user_input = "n".to_string();
+                if !yes {
+                    println!("是否要删除多余的文件? [y/n]:");
+                    let stdin = io::stdin();
+                    let mut reader = BufReader::new(stdin.lock());
+                    let mut input = String::new();
+                    reader.read_line(&mut input).expect("读取输入时出错");
+                    user_input = input.trim().to_string();
+                }
                 
-                if user_input == "y" {
+                if yes || user_input == "y" {
                     
                     for remove_file in remove_files {
                         println!("正在删除: {}", remove_file);
