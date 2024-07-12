@@ -5,7 +5,7 @@ use clap::Parser as _;
 
 fn main() {
     let cli = Cli::parse();
-    match cli_run(cli.base_path) {
+    match cli_run(cli.base_path,cli.include_ext) {
         Ok(dup) => {
             println!();
             for (k, v) in &dup {

@@ -6,12 +6,18 @@ pub mod bd;
 pub struct Cli {
     /// path to the base directory
     pub base_path: Vec<PathBuf>,
+
+    /// include file extension
+    #[arg(short, long, default_value = "rs")]
+    pub include_ext: Option<Vec<String>>,
 }
 
 pub fn cli_run(
     base_path: Vec<PathBuf>,
+    include_ext: Option<Vec<String>>
 ) -> Result<HashMap<String, Vec<String>>, Box<dyn std::error::Error>> {
-    let bd = bd::Bulldozer::new(base_path);
+    let mut bd = bd::Bulldozer::new(base_path);
+    bd.set_include_ext(include_ext);
     bd.run()
 }
 
@@ -35,7 +41,7 @@ mod tests {
     #[test]
     fn test_cli_run() {
         let base_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        let res = super::cli_run(vec![base_path.to_path_buf()]);
+        let res = super::cli_run(vec![base_path.to_path_buf()],None);
         assert!(res.is_ok());
         let res = res.unwrap();
         for (_, v) in res {
@@ -47,7 +53,7 @@ mod tests {
     fn test_only_one_for_key() {
         let mut base_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         base_path.push("test_data");
-        let res = super::cli_run(vec![base_path.to_path_buf()]);
+        let res = super::cli_run(vec![base_path.to_path_buf()],None);
         assert!(res.is_ok());
         let res = res.unwrap();
         let res = super::only_one_for_key(&res);
